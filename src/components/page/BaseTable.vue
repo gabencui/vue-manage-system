@@ -1,5 +1,7 @@
 <template>
     <div class="table">
+        <h2>区域 {{ $route.params.zone_id }}</h2>
+
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item><i class="el-icon-menu"></i> 表格</el-breadcrumb-item>
@@ -15,23 +17,49 @@
             <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
             <el-button type="primary" icon="search" @click="search">搜索</el-button>
         </div>
+        <!--<el-table :data="data" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">-->
+            <!--<el-table-column type="selection" width="55"></el-table-column>-->
+            <!--<el-table-column prop="date" label="日期" sortable width="150">-->
+            <!--</el-table-column>-->
+            <!--<el-table-column prop="name" label="姓名" width="120">-->
+            <!--</el-table-column>-->
+            <!--<el-table-column prop="address" label="地址" :formatter="formatter">-->
+            <!--</el-table-column>-->
+            <!--<el-table-column label="操作" width="180">-->
+                <!--<template scope="scope">-->
+                    <!--<el-button size="small"-->
+                            <!--@click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
+                    <!--<el-button size="small" type="danger"-->
+                            <!--@click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
+        <!--</el-table>-->
+
         <el-table :data="data" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column prop="date" label="日期" sortable width="150">
+
+            <!--<el-table-column prop="resource_id" label="ID" sortable width="120">-->
+            <el-table-column prop="resource_id" label="ID" width="120">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="120">
+            <el-table-column prop="resource_name" label="名称">
             </el-table-column>
-            <el-table-column prop="address" label="地址" :formatter="formatter">
+            <el-table-column prop="tag_name" label="标签">
             </el-table-column>
-            <el-table-column label="操作" width="180">
-                <template scope="scope">
-                    <el-button size="small"
-                            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button size="small" type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                </template>
+            <el-table-column prop="status" label="状态">
             </el-table-column>
+
+            <!--<el-table-column label="操作" width="180">-->
+                <!--<template scope="scope">-->
+                    <!--<el-button size="small"-->
+                               <!--@click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
+                    <!--<el-button size="small" type="danger"-->
+                               <!--@click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
+
         </el-table>
+
+
         <div class="pagination">
             <el-pagination
                     @current-change ="handleCurrentChange"
@@ -46,7 +74,8 @@
     export default {
         data() {
             return {
-                url: './static/vuetable.json',
+//                url: './static/vuetable.json',
+//                url: '/get-resource-list/',
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],
@@ -59,26 +88,35 @@
         created(){
             this.getData();
         },
+//        updated(){
+//            this.getData();
+//        },
+//        computed: {
+//            data(){
+//                const self = this;
+//                return self.tableData.filter(function(d){
+//                    let is_del = false;
+//                    for (let i = 0; i < self.del_list.length; i++) {
+//                        if(d.name === self.del_list[i].name){
+//                            is_del = true;
+//                            break;
+//                        }
+//                    }
+//                    if(!is_del){
+//                        if(d.address.indexOf(self.select_cate) > -1 &&
+//                            (d.name.indexOf(self.select_word) > -1 ||
+//                            d.address.indexOf(self.select_word) > -1)
+//                        ){
+//                            return d;
+//                        }
+//                    }
+//                })
+//            }
+//        },
         computed: {
-            data(){
+            data() {
                 const self = this;
-                return self.tableData.filter(function(d){
-                    let is_del = false;
-                    for (let i = 0; i < self.del_list.length; i++) {
-                        if(d.name === self.del_list[i].name){
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if(!is_del){
-                        if(d.address.indexOf(self.select_cate) > -1 && 
-                            (d.name.indexOf(self.select_word) > -1 ||
-                            d.address.indexOf(self.select_word) > -1)
-                        ){
-                            return d;
-                        }
-                    }
-                })
+                return self.tableData
             }
         },
         methods: {
@@ -87,13 +125,36 @@
                 this.getData();
             },
             getData(){
+
                 let self = this;
-                if(process.env.NODE_ENV === 'development'){
-                    self.url = '/ms/table/list';
-                };
-                self.$axios.post(self.url, {page:self.cur_page}).then((res) => {
-                    self.tableData = res.data.list;
-                })
+                console.log('/get-resource-list/'+ self.$route.params.zone_id)
+//                if(process.env.NODE_ENV === 'development'){
+//                    self.url = '/ms/table/list';
+//                };
+//                self.$axios.post(self.url, {page:self.cur_page}).then((res) => {
+//                    self.tableData = res.data.list;
+//                })
+
+                self.$axios({
+                    url: '/get-resource-list/',
+                    method: 'get',  // default
+                    baseURL: 'http://127.0.0.1:8000/api',
+                    responseType: 'json',   // default
+                    params: {
+                        zone_id: self.$route.params.zone_id,
+                        resource_type: 'instance'
+                    },
+                }).then(function (res) {
+//                        console.log(res.data);
+                        self.tableData = res.data.resource_list;
+//                        console.log(self.tableData);
+
+//                        console.log(response.status);
+//                        console.log(response.statusText);
+//                        console.log(response.headers);
+//                        console.log(response.config);
+                        }
+                    );
             },
             search(){
                 this.is_search = true;

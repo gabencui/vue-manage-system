@@ -1,6 +1,8 @@
 <template>
     <div class="sidebar">
         <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" theme="dark" unique-opened router>
+            <!--<p>{{ onRoutes }}</p>-->
+        <!--<el-menu :default-active="onRoutes" class="el-menu-vertical-demo" theme="dark" router>-->
             <template v-for="item in items">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index">
@@ -26,7 +28,7 @@
                 items: [
                     {
                         icon: 'el-icon-setting',
-                        index: 'readme',
+                        index: '/readme',
                         title: '自述'
                     },
                     {
@@ -35,13 +37,29 @@
                         title: '表格',
                         subs: [
                             {
-                                index: 'basetable',
-                                title: '基础表格'
+                                index: '/basetable/pek1',
+                                title: '北京1区'
                             },
                             {
-                                index: 'vuetable',
-                                title: 'Vue表格组件'
-                            }
+                                index: '/basetable/pek2',
+                                title: '北京2区'
+                            },
+                            {
+                                index: '/basetable/pek3a',
+                                title: '北京3区'
+                            },
+                            {
+                                index: '/basetable/ap1',
+                                title: '亚太1区'
+                            },
+//                            {
+//                                index: 'basetable',
+//                                title: '基础表格'
+//                            },
+//                            {
+//                                index: 'vuetable',
+//                                title: 'Vue表格组件'
+//                            }
                         ]
                     },
                     {
@@ -50,38 +68,40 @@
                         title: '表单',
                         subs: [
                             {
-                                index: 'baseform',
+                                index: '/baseform',
                                 title: '基本表单'
                             },
                             {
-                                index: 'vueeditor',
+                                index: '/vueeditor',
                                 title: '编辑器'
                             },
                             {
-                                index: 'markdown',
+                                index: '/markdown',
                                 title: 'markdown'
                             },
                             {
-                                index: 'upload',
+                                index: '/upload',
                                 title: '文件上传'
                             }
                         ]
                     },
                     {
                         icon: 'el-icon-star-on',
-                        index: 'basecharts',
+                        index: '/basecharts',
                         title: '图表'
                     },
                     {
                         icon: 'el-icon-upload2',
-                        index: 'drag',
+                        index: '/drag',
                         title: '拖拽'
                     }
                 ]
             }
         },
+
         computed:{
             onRoutes(){
+//                console.log(this.$route.path);
                 return this.$route.path.replace('/','');
             }
         }

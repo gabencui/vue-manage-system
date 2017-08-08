@@ -3,11 +3,15 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
+import basetable from '../components/page/BaseTable.vue'
+
 export default new Router({
+    mode: 'history',
     routes: [
         {
             path: '/',
-            redirect: '/login'
+            // redirect: '/login'
+            redirect: '/readme'
         },
         {
             path: '/readme',
@@ -17,9 +21,13 @@ export default new Router({
                     path: '/',
                     component: resolve => require(['../components/page/Readme.vue'], resolve)
                 },
+                // {
+                //     path: '/basetable',
+                //     component: resolve => require(['../components/page/BaseTable.vue'], resolve)
+                // },
                 {
-                    path: '/basetable',
-                    component: resolve => require(['../components/page/BaseTable.vue'], resolve)
+                    path: '/basetable/:zone_id',
+                    component: basetable
                 },
                 {
                     path: '/vuetable',
